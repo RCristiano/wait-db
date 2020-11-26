@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 	"os"
@@ -45,9 +46,10 @@ func main() {
 				Password: password,
 				Database: database,
 			})
-			_, err := pgdb.Exec("SELECT 1")
 
-			if err != nil {
+			ctx := context.Background()
+
+			if err := pgdb.Ping(ctx); err != nil {
 				log.Println(err)
 				exitCode = 1
 			} else {
